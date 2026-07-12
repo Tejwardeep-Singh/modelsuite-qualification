@@ -39,6 +39,23 @@ const getTaskById = async (req, res) => {
 // @access Admin
 const createTask = async (req, res) => {
   const { title, description, status, assignedTo, dueDate } = req.body;
+  const parsedDueDate = new Date(dueDate);
+  const today = new Date();
+if (Number.isNaN(parsedDueDate.getTime())) {
+  return res.status(400).json({
+    message: "Invalid due date.",
+  });
+}
+
+today.setHours(0, 0, 0, 0);
+parsedDueDate.setHours(0, 0, 0, 0);
+
+if (parsedDueDate <= today) {
+  return res.status(400).json({
+    message: "Due date must be in the future.",
+  });
+}
+
 
   try {
     const task = await Task.create({
