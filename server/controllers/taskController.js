@@ -105,7 +105,7 @@ const deleteTask = async (req, res) => {
     await Submission.deleteMany({
       taskId: req.params.id,
     });
-
+    
 await Task.findByIdAndDelete(req.params.id);
 
     res.json({ message: 'Task deleted' });
